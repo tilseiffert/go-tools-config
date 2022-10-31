@@ -31,6 +31,17 @@ func (c *Configuration) NewOption(name, defaultValue, helpMessage string) *Optio
 	})
 }
 
+// NewStrongOpption creates and adds an option with the given values and
+// an empty default-value to the options-array and returns a pointer to
+// the new option asdf asdf adsf asdf
+func (c *Configuration) NewStringOption(name, helpMessage string) *Option {
+	return c.AddOption(Option{
+		Name:        name,
+		Default:     "",
+		HelpMessage: helpMessage,
+	})
+}
+
 // Get retrieves the current option from viper and returns its value
 func (o *Option) Get() interface{} {
 	return viper.Get(o.Name)

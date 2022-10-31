@@ -46,6 +46,10 @@ func TestInit(t *testing.T) {
 			Name:    "STRING",
 			Default: "string_0987sovho32!§$%",
 		},
+		{
+			Name:    "emptyString",
+			Default: "",
+		},
 	}
 
 	conf := Configuration{
@@ -115,6 +119,32 @@ func TestConfigurationNewOption(t *testing.T) {
 
 	assert.Equal(t, "B", optionB.Name)
 	assert.Equal(t, "b", optionB.Default)
+
+	testInitAndOptions(t, conf, options)
+}
+
+func TestConfigurationNewStringOption(t *testing.T) {
+
+	// prepare test
+	viper.Reset()
+
+	// setup
+	var options []Option
+	conf := Configuration{}
+
+	optionA := conf.NewStringOption("A", "helpMessage")
+	optionB := conf.NewStringOption("B", "helpMessage")
+
+	options = append(options, *optionA)
+	options = append(options, *optionB)
+
+	// run test
+
+	assert.Equal(t, "A", optionA.Name)
+	assert.Equal(t, "", optionA.Default)
+
+	assert.Equal(t, "B", optionB.Name)
+	assert.Equal(t, "", optionB.Default)
 
 	testInitAndOptions(t, conf, options)
 }

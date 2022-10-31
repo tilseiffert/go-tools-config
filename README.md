@@ -13,6 +13,6 @@ set up configuration with ENV and config-files.
 
 ## Example
 
-For example-usage or copy-paste-template, please see [example simple-config main.go](/example/config/main.go).
+For example-usage or copy-paste-template, please see [example simple-config main.go](/config/example_test.go).
 
 For further examples have a look at the [unit tests](/config/config_test.go)

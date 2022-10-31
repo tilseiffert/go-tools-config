@@ -1,4 +1,4 @@
-package main
+package config_test
 
 import (
 	"fmt"
@@ -7,7 +7,10 @@ import (
 	"github.com/tilseiffert/go-tools-config/config"
 )
 
-func main() {
+func ExampleInit() {
+
+	// preparation for test environment
+	viper.Reset() // not needed for productive usage
 
 	// prepare
 	conf := config.Configuration{}
@@ -19,8 +22,10 @@ func main() {
 
 	// initialize
 	config.Init(conf)
+	viper.SetTypeByDefaultValue(true)
 
 	// do your stuff
-	fmt.Printf("Hello %s\n", viper.GetString(optionName.Name))
+	fmt.Printf("Hello %s\n", optionName.Get())
 
+	// Output: Hello Tilmann
 }

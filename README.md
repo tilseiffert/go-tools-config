@@ -4,6 +4,7 @@ Convenient wrapper for viper config for quick and simple go development.
 
 [![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/tilseiffert/go-tools-config.svg)](https://github.com/tilseiffert/go-tools-config)
 [![GoReportCard example](https://goreportcard.com/badge/github.com/tilseiffert/go-tools-config)](https://goreportcard.com/report/github.com/tilseiffert/go-tools-config)
+[![GitHub release](https://img.shields.io/github/release/tilseiffert/go-tools-config.svg)](https://GitHub.com/tilseiffert/go-tools-config/releases/)
 
 ## Summary
 

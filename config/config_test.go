@@ -34,13 +34,9 @@ func TestInit(t *testing.T) {
 
 		// run tests
 
-		t.Run("Check options and their default values", func(t *testing.T) {
-
-			for _, v := range config.Options {
-				assert.Equal(t, v.Default, viper.Get(v.Name))
-			}
-
-		})
+		for _, v := range config.Options {
+			assert.Equal(t, v.Default, viper.Get(v.Name))
+		}
 
 	}
 

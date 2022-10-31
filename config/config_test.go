@@ -18,7 +18,11 @@ func testInitAndOptions(t *testing.T, conf Configuration, options []Option) {
 
 		// run tests
 		for _, v := range conf.Options {
-			assert.Equal(t, v.Default, viper.Get(v.Name))
+			assert.Equal(t, v.Default, viper.Get(v.Name), "retrieve value of option through viper directly")
+		}
+
+		for _, v := range options {
+			assert.Equal(t, v.Default, v.Get(), "retrieve value of option through getta")
 		}
 	})
 }

@@ -20,6 +20,11 @@ func (c *Configuration) NewOption(o Option) *Option {
 	return &c.Options[len(c.Options)-1]
 }
 
+// Get retrieves the current option from viper and returns its value
+func (o *Option) Get() interface{} {
+	return viper.Get(o.Name)
+}
+
 // Init initalize viper with the given Configuration.
 func Init(c Configuration) error {
 

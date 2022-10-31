@@ -75,8 +75,8 @@ func TestConfigurationAddOption(t *testing.T) {
 		},
 	}
 
-	optionA := conf.NewOption(options[0])
-	optionB := conf.NewOption(options[1])
+	optionA := conf.AddOption(options[0])
+	optionB := conf.AddOption(options[1])
 
 	// run test
 	testInitAndOptions(t, conf, options)

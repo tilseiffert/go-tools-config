@@ -15,7 +15,7 @@ func ExampleInit() {
 	// prepare
 	conf := config.Configuration{}
 
-	optionName := conf.NewOption(config.Option{
+	optionName := conf.AddOption(config.Option{
 		Name:    "NAME",
 		Default: "Tilmann",
 	})

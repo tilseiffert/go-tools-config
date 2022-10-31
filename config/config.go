@@ -9,8 +9,9 @@ type Configuration struct {
 }
 
 type Option struct {
-	Name    string
-	Default interface{}
+	Name        string
+	Default     interface{}
+	HelpMessage string
 }
 
 // AddOption appends the given option to the configuration options-array
@@ -18,6 +19,16 @@ type Option struct {
 func (c *Configuration) AddOption(o Option) *Option {
 	c.Options = append(c.Options, o)
 	return &c.Options[len(c.Options)-1]
+}
+
+// NewOpption creates and adds an option with the given values to the
+// options-array and returns a pointer to the new option asdf asdf adsf asdf
+func (c *Configuration) NewOption(name, defaultValue, helpMessage string) *Option {
+	return c.AddOption(Option{
+		Name:        name,
+		Default:     defaultValue,
+		HelpMessage: helpMessage,
+	})
 }
 
 // Get retrieves the current option from viper and returns its value

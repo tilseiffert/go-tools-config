@@ -92,3 +92,29 @@ func TestConfigurationAddOption(t *testing.T) {
 		compare(t, *optionB, options[1])
 	})
 }
+
+func TestConfigurationNewOption(t *testing.T) {
+
+	// prepare test
+	viper.Reset()
+
+	// setup
+	var options []Option
+	conf := Configuration{}
+
+	optionA := conf.NewOption("A", "a", "helpMessage")
+	optionB := conf.NewOption("B", "b", "helpMessage")
+
+	options = append(options, *optionA)
+	options = append(options, *optionB)
+
+	// run test
+
+	assert.Equal(t, "A", optionA.Name)
+	assert.Equal(t, "a", optionA.Default)
+
+	assert.Equal(t, "B", optionB.Name)
+	assert.Equal(t, "b", optionB.Default)
+
+	testInitAndOptions(t, conf, options)
+}

@@ -1,4 +1,4 @@
-# go-tools
+# go-tools-config
 
 Convenient wrapper for viper config for quick and simple go development.
 
@@ -9,3 +9,9 @@ Convenient wrapper for viper config for quick and simple go development.
 
 This simple go-library is convenient wrapper to
 set up configuration with ENV and config-files.
+
+## Example
+
+For example-usage or copy-paste-template, please see [example simple-config main.go](/example/config/main.go).
+
+For further examples have a look at the [unit tests](/config/config_test.go)

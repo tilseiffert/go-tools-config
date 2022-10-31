@@ -13,6 +13,13 @@ type Option struct {
 	Default interface{}
 }
 
+// NewOption appends the given option to the configuration options-array
+// and returns a pointer to the newly appended option
+func (c *Configuration) NewOption(o Option) *Option {
+	c.Options = append(c.Options, o)
+	return &c.Options[len(c.Options)-1]
+}
+
 // Init initalize viper with the given Configuration.
 func Init(c Configuration) error {
 

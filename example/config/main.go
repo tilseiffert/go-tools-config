@@ -10,19 +10,17 @@ import (
 func main() {
 
 	// prepare
-	conf := config.Configuration{
-		Options: []config.Option{
-			{
-				Name:    "name",
-				Default: "Tilmann",
-			},
-		},
-	}
+	conf := config.Configuration{}
+
+	optionName := conf.NewOption(config.Option{
+		Name:    "NAME",
+		Default: "Tilmann",
+	})
 
 	// initialize
 	config.Init(conf)
 
 	// do your stuff
-	fmt.Printf("Hello %s\n", viper.GetString(conf.Options[0].Name))
+	fmt.Printf("Hello %s\n", viper.GetString(optionName.Name))
 
 }

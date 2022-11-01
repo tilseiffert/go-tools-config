@@ -13,12 +13,9 @@ func ExampleInit() {
 	viper.Reset() // not needed for productive usage
 
 	// prepare
-	conf := config.Configuration{}
+	conf := config.New()
 
-	optionName := conf.AddOption(config.Option{
-		Name:    "NAME",
-		Default: "Tilmann",
-	})
+	optionName := conf.NewOption("NAME", "Tilmann", "")
 
 	// initialize
 	config.Init(conf)

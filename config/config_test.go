@@ -104,7 +104,7 @@ func TestConfigurationNewOption(t *testing.T) {
 
 	// setup
 	var options []Option
-	conf := Configuration{}
+	conf := New()
 
 	optionA := conf.NewOption("A", "a", "helpMessage")
 	optionB := conf.NewOption("B", 2, "helpMessage")
@@ -135,7 +135,7 @@ func TestConfigurationNewStringOption(t *testing.T) {
 
 	// setup
 	var options []Option
-	conf := Configuration{}
+	conf := New()
 
 	optionA := conf.NewStringOption("A", "helpMessage")
 	optionB := conf.NewStringOption("B", "helpMessage")

@@ -107,10 +107,12 @@ func TestConfigurationNewOption(t *testing.T) {
 	conf := Configuration{}
 
 	optionA := conf.NewOption("A", "a", "helpMessage")
-	optionB := conf.NewOption("B", "b", "helpMessage")
+	optionB := conf.NewOption("B", 2, "helpMessage")
+	optionC := conf.NewOption("C", nil, "helpMessage")
 
 	options = append(options, *optionA)
 	options = append(options, *optionB)
+	options = append(options, *optionC)
 
 	// run test
 
@@ -118,7 +120,10 @@ func TestConfigurationNewOption(t *testing.T) {
 	assert.Equal(t, "a", optionA.Default)
 
 	assert.Equal(t, "B", optionB.Name)
-	assert.Equal(t, "b", optionB.Default)
+	assert.Equal(t, 2, optionB.Default)
+
+	assert.Equal(t, "C", optionC.Name)
+	assert.Equal(t, nil, optionC.Default)
 
 	testInitAndOptions(t, conf, options)
 }

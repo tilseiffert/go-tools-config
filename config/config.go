@@ -23,7 +23,7 @@ func (c *Configuration) AddOption(o Option) *Option {
 
 // NewOpption creates and adds an option with the given values to the
 // options-array and returns a pointer to the new option asdf asdf adsf asdf
-func (c *Configuration) NewOption(name, defaultValue, helpMessage string) *Option {
+func (c *Configuration) NewOption(name string, defaultValue interface{}, helpMessage string) *Option {
 	return c.AddOption(Option{
 		Name:        name,
 		Default:     defaultValue,

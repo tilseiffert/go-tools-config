@@ -1,6 +1,9 @@
 package config
 
 import (
+	"bytes"
+	"fmt"
+
 	"github.com/spf13/viper"
 )
 
@@ -11,9 +14,31 @@ type Configuration struct {
 }
 
 type Option struct {
-	Name        string
-	Default     interface{}
-	HelpMessage string
+	Name          string
+	Default       interface{}
+	HelpMessage   string
+	CheckNotEmpty bool // only implemented for string and int
+}
+
+type ErrConfigOptionsEmpty struct {
+	FailedOptions []string
+}
+
+// define Error() method on the struct
+func (e ErrConfigOptionsEmpty) Error() string {
+
+	var msg bytes.Buffer
+	msg.WriteString(fmt.Sprintf("there were %d unexpected empty options: ", len(e.FailedOptions)))
+
+	for k, v := range e.FailedOptions {
+		if k != 0 {
+			msg.WriteString(", ")
+		}
+
+		msg.WriteString(v)
+	}
+
+	return msg.String()
 }
 
 // New() creates default configuration:
@@ -36,11 +61,12 @@ func (c *Configuration) AddOption(o Option) *Option {
 
 // NewOpption() creates and adds an option with the given values to the
 // options-array and returns a pointer to the new option asdf asdf adsf asdf
-func (c *Configuration) NewOption(name string, defaultValue interface{}, helpMessage string) *Option {
+func (c *Configuration) NewOption(name string, defaultValue interface{}, checkNotEmpty bool, helpMessage string) *Option {
 	return c.AddOption(Option{
-		Name:        name,
-		Default:     defaultValue,
-		HelpMessage: helpMessage,
+		Name:          name,
+		Default:       defaultValue,
+		CheckNotEmpty: checkNotEmpty,
+		HelpMessage:   helpMessage,
 	})
 }
 
@@ -63,11 +89,10 @@ func (o *Option) Get() interface{} {
 // Init() initalize viper with the given Configuration.
 func Init(c Configuration) error {
 
+	optionsEmpty := ErrConfigOptionsEmpty{}
+
 	// set default for each option
 	for _, v := range c.Options {
-		// if v.Default == nil {
-		// 	continue
-		// }
 		viper.SetDefault(v.Name, v.Default)
 	}
 
@@ -77,6 +102,31 @@ func Init(c Configuration) error {
 
 	if c.SetTypeByDefaultValue {
 		viper.SetTypeByDefaultValue(true)
+	}
+
+	for _, v := range c.Options {
+		if !v.CheckNotEmpty {
+			continue
+		}
+
+		switch v.Default.(type) {
+		case int:
+			if v.Get() == 0 {
+				optionsEmpty.FailedOptions = append(optionsEmpty.FailedOptions, v.Name)
+			}
+		case string:
+			if v.Get() == "" {
+				optionsEmpty.FailedOptions = append(optionsEmpty.FailedOptions, v.Name)
+			}
+		default:
+			if v.Get() == nil {
+				optionsEmpty.FailedOptions = append(optionsEmpty.FailedOptions, v.Name)
+			}
+		}
+	}
+
+	if len(optionsEmpty.FailedOptions) > 0 {
+		return optionsEmpty
 	}
 
 	return nil

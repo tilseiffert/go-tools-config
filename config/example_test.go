@@ -15,7 +15,7 @@ func ExampleInit() {
 	// prepare
 	conf := config.New()
 
-	optionName := conf.NewOption("NAME", "Tilmann", "")
+	optionName := conf.NewOption("NAME", "Tilmann", false, "")
 
 	// initialize
 	config.Init(conf)

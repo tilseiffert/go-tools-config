@@ -8,12 +8,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func testInitAndOptions(t *testing.T, conf Configuration, options []Option) {
+func testInitAndOptions(t *testing.T, conf Configuration, options []Option, errorExpected bool) {
+	t.Helper()
+
 	t.Run("test init and options", func(t *testing.T) {
 
 		// run Init
-		if !assert.Nil(t, Init(conf)) {
-			return
+		err := Init(conf)
+
+		if errorExpected {
+			assert.NotNil(t, err, "got nil but expected error...")
+		} else {
+			assert.Nil(t, err, "got error but expected none...")
 		}
 
 		// run tests
@@ -57,7 +63,15 @@ func TestInit(t *testing.T) {
 	}
 
 	// run test
-	testInitAndOptions(t, conf, options)
+	testInitAndOptions(t, conf, options, false)
+}
+
+func TestNew(t *testing.T) {
+	conf := New()
+
+	assert.Equal(t, 0, len(conf.Options), "amount of initalized options")
+	assert.Equal(t, true, conf.SetAutomaticEnv)
+	assert.Equal(t, true, conf.SetTypeByDefaultValue)
 }
 
 func TestConfigurationAddOption(t *testing.T) {
@@ -83,7 +97,7 @@ func TestConfigurationAddOption(t *testing.T) {
 	optionB := conf.AddOption(options[1])
 
 	// run test
-	testInitAndOptions(t, conf, options)
+	testInitAndOptions(t, conf, options, false)
 
 	t.Run("compare options", func(t *testing.T) {
 		compare := func(t *testing.T, o1 Option, o2 Option) {
@@ -104,23 +118,31 @@ func TestConfigurationNewOption(t *testing.T) {
 
 	// setup
 	var options []Option
-	conf := Configuration{}
+	conf := New()
 
-	optionA := conf.NewOption("A", "a", "helpMessage")
-	optionB := conf.NewOption("B", "b", "helpMessage")
+	optionA := conf.NewOption("A", "a", false, "helpMessage")
+	optionB := conf.NewOption("B", 2, false, "helpMessage")
+	optionC := conf.NewOption("C", nil, true, "helpMessage")
 
 	options = append(options, *optionA)
 	options = append(options, *optionB)
+	options = append(options, *optionC)
 
 	// run test
 
 	assert.Equal(t, "A", optionA.Name)
 	assert.Equal(t, "a", optionA.Default)
+	assert.Equal(t, false, optionA.CheckNotEmpty)
 
 	assert.Equal(t, "B", optionB.Name)
-	assert.Equal(t, "b", optionB.Default)
+	assert.Equal(t, 2, optionB.Default)
+	assert.Equal(t, false, optionB.CheckNotEmpty)
 
-	testInitAndOptions(t, conf, options)
+	assert.Equal(t, "C", optionC.Name)
+	assert.Equal(t, nil, optionC.Default)
+	assert.Equal(t, true, optionC.CheckNotEmpty)
+
+	testInitAndOptions(t, conf, options, true)
 }
 
 func TestConfigurationNewStringOption(t *testing.T) {
@@ -130,7 +152,7 @@ func TestConfigurationNewStringOption(t *testing.T) {
 
 	// setup
 	var options []Option
-	conf := Configuration{}
+	conf := New()
 
 	optionA := conf.NewStringOption("A", "helpMessage")
 	optionB := conf.NewStringOption("B", "helpMessage")
@@ -146,5 +168,5 @@ func TestConfigurationNewStringOption(t *testing.T) {
 	assert.Equal(t, "B", optionB.Name)
 	assert.Equal(t, "", optionB.Default)
 
-	testInitAndOptions(t, conf, options)
+	testInitAndOptions(t, conf, options, false)
 }

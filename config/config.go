@@ -5,7 +5,9 @@ import (
 )
 
 type Configuration struct {
-	Options []Option // list of used options
+	Options               []Option // list of used options
+	SetTypeByDefaultValue bool
+	SetAutomaticEnv       bool
 }
 
 type Option struct {
@@ -14,9 +16,15 @@ type Option struct {
 	HelpMessage string
 }
 
-// New() creates default configuration.
+// New() creates default configuration:
+// - SetTypeByDefaultValue: true
+// - SetAutomaticEnv: true,
 func New() Configuration {
-	return Configuration{}
+	return Configuration{
+		Options:               []Option{},
+		SetTypeByDefaultValue: true,
+		SetAutomaticEnv:       true,
+	}
 }
 
 // AddOption() appends the given option to the configuration options-array
@@ -61,6 +69,14 @@ func Init(c Configuration) error {
 		// 	continue
 		// }
 		viper.SetDefault(v.Name, v.Default)
+	}
+
+	if c.SetAutomaticEnv {
+		viper.AutomaticEnv()
+	}
+
+	if c.SetTypeByDefaultValue {
+		viper.SetTypeByDefaultValue(true)
 	}
 
 	return nil

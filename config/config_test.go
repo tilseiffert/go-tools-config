@@ -60,6 +60,14 @@ func TestInit(t *testing.T) {
 	testInitAndOptions(t, conf, options)
 }
 
+func TestNew(t *testing.T) {
+	conf := New()
+
+	assert.Equal(t, 0, len(conf.Options), "amount of initalized options")
+	assert.Equal(t, true, conf.SetAutomaticEnv)
+	assert.Equal(t, true, conf.SetTypeByDefaultValue)
+}
+
 func TestConfigurationAddOption(t *testing.T) {
 
 	// prepare test
@@ -106,9 +114,9 @@ func TestConfigurationNewOption(t *testing.T) {
 	var options []Option
 	conf := New()
 
-	optionA := conf.NewOption("A", "a", "helpMessage")
-	optionB := conf.NewOption("B", 2, "helpMessage")
-	optionC := conf.NewOption("C", nil, "helpMessage")
+	optionA := conf.NewOption("A", "a", false, "helpMessage")
+	optionB := conf.NewOption("B", 2, false, "helpMessage")
+	optionC := conf.NewOption("C", nil, true, "helpMessage")
 
 	options = append(options, *optionA)
 	options = append(options, *optionB)
@@ -118,12 +126,15 @@ func TestConfigurationNewOption(t *testing.T) {
 
 	assert.Equal(t, "A", optionA.Name)
 	assert.Equal(t, "a", optionA.Default)
+	assert.Equal(t, false, optionA.CheckNotEmpty)
 
 	assert.Equal(t, "B", optionB.Name)
 	assert.Equal(t, 2, optionB.Default)
+	assert.Equal(t, false, optionB.CheckNotEmpty)
 
 	assert.Equal(t, "C", optionC.Name)
 	assert.Equal(t, nil, optionC.Default)
+	assert.Equal(t, true, optionC.CheckNotEmpty)
 
 	testInitAndOptions(t, conf, options)
 }

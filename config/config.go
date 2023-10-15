@@ -86,6 +86,30 @@ func (o *Option) Get() interface{} {
 	return viper.Get(o.Name)
 }
 
+// GetString() retrieves the current option from viper and returns its value
+// as string.
+func (o *Option) GetString() string {
+	return viper.GetString(o.Name)
+}
+
+// GetInt() retrieves the current option from viper and returns its value
+// as int.
+func (o *Option) GetInt() int {
+	return viper.GetInt(o.Name)
+}
+
+// GetBool() retrieves the current option from viper and returns its value
+// as bool.
+func (o *Option) GetBool() bool {
+	return viper.GetBool(o.Name)
+}
+
+// GetFloat64() retrieves the current option from viper and returns its value
+// as float64.
+func (o *Option) GetFloat64() float64 {
+	return viper.GetFloat64(o.Name)
+}
+
 // Init() initalize viper with the given Configuration.
 func Init(c Configuration) error {
 

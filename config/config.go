@@ -9,8 +9,10 @@ import (
 
 type Configuration struct {
 	Options               []Option // list of used options
-	SetTypeByDefaultValue bool
-	SetAutomaticEnv       bool
+	SetTypeByDefaultValue bool     // set type of option by default value
+	SetAutomaticEnv       bool     // set automatic env
+	ConfigPaths           []string // list of config paths
+	ConfigName            string   // name of config file
 }
 
 type Option struct {
@@ -44,11 +46,13 @@ func (e ErrConfigOptionsEmpty) Error() string {
 // New() creates default configuration:
 // - SetTypeByDefaultValue: true
 // - SetAutomaticEnv: true,
+// - ConfigName: "", (no configuration file will be used)
 func New() Configuration {
 	return Configuration{
 		Options:               []Option{},
 		SetTypeByDefaultValue: true,
 		SetAutomaticEnv:       true,
+		ConfigName:            "",
 	}
 }
 
@@ -126,6 +130,18 @@ func Init(c Configuration) error {
 
 	if c.SetTypeByDefaultValue {
 		viper.SetTypeByDefaultValue(true)
+	}
+
+	if c.ConfigName != "" {
+		viper.SetConfigName(c.ConfigName)
+
+		for _, v := range c.ConfigPaths {
+			viper.AddConfigPath(v)
+		}
+
+		if err := viper.ReadInConfig(); err != nil {
+			return err
+		}
 	}
 
 	for _, v := range c.Options {
